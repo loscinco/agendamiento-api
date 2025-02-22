@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: agendamiento-api
+  datasource:
+    url: jdbc:mysql://172.21.1.34:30002/agendifive?useSSL=false&serverTimezone=UTC
+    username: carlos.alba
+    password: 'CarlosandreS21.'
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true

@@ -1,0 +1,4 @@
+0:0:0:0:0:0:0:1 - - [21/Feb/2025:21:21:25 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 500 141
+0:0:0:0:0:0:0:1 - - [21/Feb/2025:21:28:10 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 500 141
+0:0:0:0:0:0:0:1 - - [21/Feb/2025:21:30:06 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 500 141
+0:0:0:0:0:0:0:1 - - [21/Feb/2025:21:31:13 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 200 99

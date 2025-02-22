@@ -1,0 +1,14 @@
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:00:39:37 -0300] "GET /agendamiento-api/api/getCurvesExcel HTTP/1.1" 200 4
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:01:09:53 -0300] "GET /agendamiento-api/api/getCurvesExcel HTTP/1.1" 404 135
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:01:10:08 -0300] "GET /agendamiento-api/api/BookingController HTTP/1.1" 405 147
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:01:10:19 -0300] "POST /agendamiento-api/api/BookingController HTTP/1.1" 400 140
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:01:12:06 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 400 131
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:01:13:54 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 200 5
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:01:14:21 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 200 5
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:01:59:33 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 404 611
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:02:20:56 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 500 141
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:02:21:34 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 500 141
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:02:24:18 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 500 141
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:02:25:24 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 500 141
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:02:26:47 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 500 141
+0:0:0:0:0:0:0:1 - - [20/Feb/2025:18:24:09 -0300] "POST /agendamiento-api/api/bookings HTTP/1.1" 200 5
