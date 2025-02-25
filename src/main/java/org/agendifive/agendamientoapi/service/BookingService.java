@@ -24,18 +24,23 @@ public class BookingService implements BookingInterface {
     public BookingResponse BookingSave(BookingRequest bookingRequest) {
 
         String error = validateBookingRequest(bookingRequest);
-        if(error != null){
-            Appointment appointment = new Appointment();
-            appointment.setStatus("A");
-            appointment.setAppointmentDate(bookingRequest.getDateAppointment());
-            appointment.setFullName(bookingRequest.getNameClient());
-            appointment.setEmail(bookingRequest.getEmail());
-            appointment.setPhone(bookingRequest.getPhone());
-            appointment.setSpecialist(bookingRequest.getSpecialistID());
-            appointment.setService(bookingRequest.getServiceID());
-            appointment.setAppointmentTime(bookingRequest.getAppointmentTime());// pendiente validar
-            appointmentRepository.save(appointment);
-            return responsesave(true);
+        if(error == null){
+            try{
+                Appointment appointment = new Appointment();
+                appointment.setStatus("A");
+                appointment.setAppointmentDate(bookingRequest.getDateAppointment());
+                appointment.setFullName(bookingRequest.getNameClient());
+                appointment.setEmail(bookingRequest.getEmail());
+                appointment.setPhone(bookingRequest.getPhone());
+                appointment.setSpecialist(bookingRequest.getSpecialistID());
+                appointment.setService(bookingRequest.getServiceID());
+                appointment.setAppointmentTime(bookingRequest.getAppointmentTime());// pendiente validar
+                appointmentRepository.save(appointment);
+                return responsesave(true);
+            }catch (Exception e){
+                e.printStackTrace();
+                return responsesave(false);
+            }
         }else{
             return responsesave(false);
         }
@@ -66,7 +71,7 @@ public class BookingService implements BookingInterface {
             }
         }
 
-        return "Validación exitosa.";
+        return null;
     }
 
 
