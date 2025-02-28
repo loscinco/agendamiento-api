@@ -1,15 +1,14 @@
-package org.agendifive.agendamientoapi.service;
+package org.agendifive.agendamientoapi.booking.service;
 
 
-import org.agendifive.agendamientoapi.model.Appointment;
-import org.agendifive.agendamientoapi.model.BookingRequest;
-import org.agendifive.agendamientoapi.model.BookingResponse;
-import org.agendifive.agendamientoapi.repository.AppointmentRepository;
+import org.agendifive.agendamientoapi.booking.model.Appointment;
+import org.agendifive.agendamientoapi.booking.model.BookingRequest;
+import org.agendifive.agendamientoapi.booking.model.BookingResponse;
+import org.agendifive.agendamientoapi.booking.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;

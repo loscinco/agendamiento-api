@@ -1,4 +1,4 @@
-package org.agendifive.agendamientoapi.model;
+package org.agendifive.agendamientoapi.booking.model;
 
 public class BookingResponse {
     private static final long serialVersionUID = -6068974569530002278L;

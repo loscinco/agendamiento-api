@@ -1,4 +1,4 @@
-package org.agendifive.agendamientoapi.model;
+package org.agendifive.agendamientoapi.booking.model;
 
 public interface ReturnStatusInterface {
     public String getStatus();

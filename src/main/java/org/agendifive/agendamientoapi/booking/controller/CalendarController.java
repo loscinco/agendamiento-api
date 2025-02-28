@@ -1,8 +1,8 @@
-package org.agendifive.agendamientoapi.controller;
+package org.agendifive.agendamientoapi.booking.controller;
 
-import org.agendifive.agendamientoapi.model.BookingRequest;
-import org.agendifive.agendamientoapi.model.BookingResponse;
-import org.agendifive.agendamientoapi.service.BookingInterface;
+import org.agendifive.agendamientoapi.booking.model.BookingRequest;
+import org.agendifive.agendamientoapi.booking.model.BookingResponse;
+import org.agendifive.agendamientoapi.booking.service.BookingInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

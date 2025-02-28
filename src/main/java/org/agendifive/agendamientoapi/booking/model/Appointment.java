@@ -1,4 +1,4 @@
-package org.agendifive.agendamientoapi.model;
+package org.agendifive.agendamientoapi.booking.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
