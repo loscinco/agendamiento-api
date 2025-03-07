@@ -6,4 +6,5 @@ import org.agendifive.agendamientoapi.model.BookingResponse;
 public interface BookingInterface {
 
     BookingResponse BookingSave(BookingRequest bookingRequest);
+    BookingResponse getschedulebyspecialist(Integer specialistId);
 }

@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "appointment")
@@ -38,13 +41,9 @@ public class Appointment {
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Date createdAt;
+    private Date createdAt;
 
     @Column(nullable = false, length = 20)
     private String status;
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = new java.util.Date();
-    }
 }

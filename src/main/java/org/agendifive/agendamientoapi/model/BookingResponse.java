@@ -1,9 +1,12 @@
 package org.agendifive.agendamientoapi.model;
 
+import java.util.List;
+
 public class BookingResponse {
     private static final long serialVersionUID = -6068974569530002278L;
 
     // Instancia de ReturnStatus que implementa ReturnStatusInterface
+    private List<Appointment> data;
     private ReturnStatusInterface returnStatus = new ReturnStatus();
 
     // Constructor que permite inicializar con estado y mensaje
@@ -26,5 +29,13 @@ public class BookingResponse {
 
     public void setBusinessMessage(String message) {
         this.returnStatus.setBusinessMessage(message);
+    }
+
+    public List<Appointment> getData() {
+        return data;
+    }
+
+    public void setData(List<Appointment> data) {
+        this.data = data;
     }
 }

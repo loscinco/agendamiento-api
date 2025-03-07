@@ -9,10 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.*;
 import java.util.function.Function;
+import java.time.Duration;
 
 @Service
 public class BookingService implements BookingInterface {
@@ -26,6 +27,8 @@ public class BookingService implements BookingInterface {
         String error = validateBookingRequest(bookingRequest);
         if(error == null){
             try{
+                ZonedDateTime colombiaTime = ZonedDateTime.now(ZoneId.of("America/Bogota"));
+                ZonedDateTime colombiaTimeMinus5 = colombiaTime.minus(Duration.ofHours(5));//restamos 5 horas
                 Appointment appointment = new Appointment();
                 appointment.setStatus("A");
                 appointment.setAppointmentDate(bookingRequest.getDateAppointment());
@@ -35,6 +38,7 @@ public class BookingService implements BookingInterface {
                 appointment.setSpecialist(bookingRequest.getSpecialistID());
                 appointment.setService(bookingRequest.getServiceID());
                 appointment.setAppointmentTime(bookingRequest.getAppointmentTime());// pendiente validar
+                appointment.setCreatedAt(Date.from(colombiaTimeMinus5.toInstant()));
                 appointmentRepository.save(appointment);
                 return responsesave(true);
             }catch (Exception e){
@@ -45,6 +49,25 @@ public class BookingService implements BookingInterface {
             return responsesave(false);
         }
 
+    }
+
+    @Override
+    public BookingResponse getschedulebyspecialist(Integer specialistId) {
+        LocalDate today = LocalDate.now(ZoneId.of("America/Bogota"));
+        BookingResponse response = new BookingResponse();
+        System.out.println(today);
+        List<Appointment> appointments = new ArrayList<>();
+        appointments = appointmentRepository.findAppointmentsBySpecialist(specialistId,today);
+        if(appointments.size() > 0){
+            response.setStatus("OK");
+            response.setBusinessMessage("Agenda encontrada correctamente");
+            response.setData(appointments);
+            return response;
+        }
+        response.setStatus("NOOK");
+        response.setBusinessMessage("No existe agenda para el escecialista seleccionado");
+
+        return response;
     }
 
     private String validateBookingRequest(BookingRequest request) {
