@@ -55,7 +55,6 @@ public class BookingService implements BookingInterface {
     public BookingResponse getschedulebyspecialist(Integer specialistId) {
         LocalDate today = LocalDate.now(ZoneId.of("America/Bogota"));
         BookingResponse response = new BookingResponse();
-        System.out.println(today);
         List<Appointment> appointments = new ArrayList<>();
         appointments = appointmentRepository.findAppointmentsBySpecialist(specialistId,today);
         if(appointments.size() > 0){
