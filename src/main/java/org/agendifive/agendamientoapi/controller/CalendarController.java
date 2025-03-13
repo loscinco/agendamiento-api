@@ -18,8 +18,18 @@ public class CalendarController {
 
     @PostMapping("/bookings")
     public BookingResponse saveBooking(@RequestBody BookingRequest bookingRequest) {
-        return bookingInterface.BookingSave(bookingRequest);
+        return bookingInterface.bookingSave(bookingRequest);
     }
+
+    @PostMapping("/reschedule")
+    @Operation(
+            summary = "Reagenda si tiene una cita existente",
+            description = "Reagenda si tiene una cita existente verifica correo,fecha y servicio"
+    )
+    public BookingResponse reschedule(@RequestBody BookingRequest bookingRequest) {
+        return bookingInterface.reschedule(bookingRequest);
+    }
+
 
     @GetMapping("/getschedulebyspecialist/{specialistId}")
     @Operation(
@@ -28,5 +38,14 @@ public class CalendarController {
     )
     public BookingResponse getschedulebyspecialist(@PathVariable Integer specialistId) {
         return bookingInterface.getschedulebyspecialist(specialistId);
+    }
+
+    @GetMapping("/getschedulebyspecialistbydate/{specialistId}/{date}")
+    @Operation(
+            summary = "Obtiene agenda por especialista por dia",
+            description = "Retorna una lista de agendas por especialistas"
+    )
+    public BookingResponse getschedulebyspecialistbydate(@PathVariable Integer specialistId,@PathVariable String date) {
+        return bookingInterface.getschedulebyspecialistbydate(specialistId,date);
     }
 }

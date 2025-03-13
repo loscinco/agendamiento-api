@@ -17,5 +17,16 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findAppointmentsBySpecialist(
             @Param("specialist") Integer specialist, @Param("today") LocalDate today);
 
+    @Query("SELECT a FROM Appointment a WHERE a.specialist = :specialistId AND a.appointmentDate = :appointmentDate and a.status='A' ")
+    List<Appointment> findAppointmentsBySpecialistAndDate(
+            @Param("specialistId") Integer specialistId,
+            @Param("appointmentDate") LocalDate appointmentDate);
+
+    @Query("SELECT a FROM Appointment a WHERE a.email = :email AND a.appointmentDate = :appointmentDate and a.status='A' and a.service= :serviceId ")
+    Appointment appointmentOnTheSameDay(
+            @Param("email") String email,
+            @Param("appointmentDate") LocalDate appointmentDate,
+            @Param("serviceId") Integer serviceId);
+
 
 }

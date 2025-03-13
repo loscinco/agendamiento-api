@@ -46,4 +46,7 @@ public class Appointment {
     @Column(nullable = false, length = 20)
     private String status;
 
+    @Column(name = "appointment_time_finish", nullable = false)
+    private LocalTime appointmentTimeFinish;
+
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.function.Function;
 import java.time.Duration;
@@ -22,24 +24,16 @@ public class BookingService implements BookingInterface {
     private AppointmentRepository appointmentRepository;
 
     @Override
-    public BookingResponse BookingSave(BookingRequest bookingRequest) {
+    public BookingResponse bookingSave(BookingRequest bookingRequest) {
 
         String error = validateBookingRequest(bookingRequest);
         if(error == null){
             try{
-                ZonedDateTime colombiaTime = ZonedDateTime.now(ZoneId.of("America/Bogota"));
-                ZonedDateTime colombiaTimeMinus5 = colombiaTime.minus(Duration.ofHours(5));//restamos 5 horas
-                Appointment appointment = new Appointment();
-                appointment.setStatus("A");
-                appointment.setAppointmentDate(bookingRequest.getDateAppointment());
-                appointment.setFullName(bookingRequest.getNameClient());
-                appointment.setEmail(bookingRequest.getEmail());
-                appointment.setPhone(bookingRequest.getPhone());
-                appointment.setSpecialist(bookingRequest.getSpecialistID());
-                appointment.setService(bookingRequest.getServiceID());
-                appointment.setAppointmentTime(bookingRequest.getAppointmentTime());// pendiente validar
-                appointment.setCreatedAt(Date.from(colombiaTimeMinus5.toInstant()));
-                appointmentRepository.save(appointment);
+                BookingResponse response = validateAppointment(bookingRequest);
+                if (response != null) {
+                    return response; // Retorna inmediatamente si hay una cita existente
+                }
+                saveAppointment(bookingRequest);
                 return responsesave(true);
             }catch (Exception e){
                 e.printStackTrace();
@@ -48,6 +42,27 @@ public class BookingService implements BookingInterface {
         }else{
             return responsesave(false);
         }
+
+    }
+
+    @Override
+    public BookingResponse reschedule(BookingRequest bookingRequest) {
+        String error = validateBookingRequest(bookingRequest);
+        if(error == null){
+            try {
+                Appointment appointment = appointmentRepository.appointmentOnTheSameDay(bookingRequest.getEmail(),bookingRequest.getDateAppointment(),bookingRequest.getServiceID());
+                if(appointment != null){
+                    appointment.setStatus("I");
+                    appointmentRepository.save(appointment);
+                }
+                saveAppointment(bookingRequest);
+                return responsesave(true);
+            }catch (Exception e){
+                return responsesave(false);
+            }
+
+        }
+            return responsesave(false);
 
     }
 
@@ -67,6 +82,32 @@ public class BookingService implements BookingInterface {
         response.setBusinessMessage("No existe agenda para el escecialista seleccionado");
 
         return response;
+    }
+
+    @Override
+    public BookingResponse getschedulebyspecialistbydate(Integer specialistId, String date) {
+        LocalDate appointmentDate = null;
+        BookingResponse bookingResponse = new BookingResponse();
+
+        List<Appointment> appointmentList = new ArrayList<>();
+        try {
+            appointmentDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            appointmentList = appointmentRepository.findAppointmentsBySpecialistAndDate(specialistId,appointmentDate);
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            System.out.println("Fecha inválida: " + e.getMessage());
+            bookingResponse.setStatus("NOOK");
+            bookingResponse.setBusinessMessage("la fecha debe estar en formato yyyy-MM-dd");
+            return bookingResponse;
+        }
+
+        if(appointmentList.size() > 0){
+            bookingResponse.setData(appointmentList);
+        }
+        bookingResponse.setStatus("OK");
+        bookingResponse.setBusinessMessage("agenda obtenida correctamente");
+
+        return bookingResponse;
     }
 
     private String validateBookingRequest(BookingRequest request) {
@@ -119,5 +160,35 @@ public class BookingService implements BookingInterface {
         }
 
         return bookingResponse;
+    }
+
+    private BookingResponse validateAppointment(BookingRequest request){
+        //si tiene cita para el mismo dia, correo y servicio no se guarda
+        BookingResponse response = new BookingResponse();
+        Appointment appointment = appointmentRepository.appointmentOnTheSameDay(request.getEmail(),request.getDateAppointment(),request.getServiceID());
+
+        if(appointment != null){
+            response.setStatus("NOOK");
+            response.setBusinessMessage("Usted tiene una cita para el serivico y fecha seleccionada");
+            return response;
+        }
+        return null;
+    }
+
+    private void saveAppointment(BookingRequest bookingRequest){
+        ZonedDateTime colombiaTime = ZonedDateTime.now(ZoneId.of("America/Bogota"));
+        ZonedDateTime colombiaTimeMinus5 = colombiaTime.minus(Duration.ofHours(5));//restamos 5 horas
+        Appointment appointment = new Appointment();
+        appointment.setStatus("A");
+        appointment.setAppointmentDate(bookingRequest.getDateAppointment());
+        appointment.setFullName(bookingRequest.getNameClient());
+        appointment.setEmail(bookingRequest.getEmail());
+        appointment.setPhone(bookingRequest.getPhone());
+        appointment.setSpecialist(bookingRequest.getSpecialistID());
+        appointment.setService(bookingRequest.getServiceID());
+        appointment.setAppointmentTime(bookingRequest.getAppointmentTime());// pendiente validar
+        appointment.setCreatedAt(Date.from(colombiaTimeMinus5.toInstant()));
+        appointment.setAppointmentTimeFinish(bookingRequest.getAppointmentTime().plusMinutes(bookingRequest.getServiceDuration()));
+        appointmentRepository.save(appointment);
     }
 }
