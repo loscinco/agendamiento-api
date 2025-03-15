@@ -25,7 +25,6 @@ public class BookingService implements BookingInterface {
 
     @Override
     public BookingResponse bookingSave(BookingRequest bookingRequest) {
-
         String error = validateBookingRequest(bookingRequest);
         if(error == null){
             try{
@@ -168,8 +167,11 @@ public class BookingService implements BookingInterface {
         Appointment appointment = appointmentRepository.appointmentOnTheSameDay(request.getEmail(),request.getDateAppointment(),request.getServiceID());
 
         if(appointment != null){
+            List<Appointment> appointmentList = new ArrayList<>();
+            appointmentList.add(appointment);
             response.setStatus("NOOK");
             response.setBusinessMessage("Usted tiene una cita para el serivico y fecha seleccionada");
+            response.setData(appointmentList);
             return response;
         }
         return null;
