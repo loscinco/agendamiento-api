@@ -96,6 +96,8 @@
                 </configuration>
             </plugin>
         </plugins>
+            <finalName>agendamiento-api</finalName>
     </build>
 
 </project>
+

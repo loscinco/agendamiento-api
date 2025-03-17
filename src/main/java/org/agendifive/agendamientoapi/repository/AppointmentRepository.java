@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     @Query(value = "SELECT * FROM appointment " +
-            "WHERE specialist = :specialist AND appointment_date >= :today " +
+            "WHERE specialist = :specialist AND appointment_date >= :today AND status = 'A'  " +
             "ORDER BY appointment_date ASC, appointment_time ASC", nativeQuery = true)
     List<Appointment> findAppointmentsBySpecialist(
             @Param("specialist") Integer specialist, @Param("today") LocalDate today);
