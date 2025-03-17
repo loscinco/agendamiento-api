@@ -24,7 +24,7 @@ public class CalendarController {
     @PostMapping("/reschedule")
     @Operation(
             summary = "Reagenda si tiene una cita existente",
-            description = "Reagenda si tiene una cita existente verifica correo,fecha y servicio"
+            description = "Reagenda si tiene una cita existente verifica correo,fecha y servicios"
     )
     public BookingResponse reschedule(@RequestBody BookingRequest bookingRequest) {
         return bookingInterface.reschedule(bookingRequest);
