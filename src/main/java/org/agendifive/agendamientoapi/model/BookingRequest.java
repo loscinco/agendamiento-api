@@ -17,6 +17,7 @@ public class BookingRequest {
     private LocalDate dateAppointment;
     private LocalTime appointmentTime;
     private int serviceDuration;
+    private String message;
 
 
 

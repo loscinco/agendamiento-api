@@ -4,6 +4,7 @@ package org.agendifive.agendamientoapi.service;
 import org.agendifive.agendamientoapi.model.Appointment;
 import org.agendifive.agendamientoapi.model.BookingRequest;
 import org.agendifive.agendamientoapi.model.BookingResponse;
+import org.agendifive.agendamientoapi.model.NotificationRequest;
 import org.agendifive.agendamientoapi.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class BookingService implements BookingInterface {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+    @Autowired
+    private NotificationInterface notificationInterface;
 
     @Override
     public BookingResponse bookingSave(BookingRequest bookingRequest) {
@@ -33,13 +36,19 @@ public class BookingService implements BookingInterface {
                     return response; // Retorna inmediatamente si hay una cita existente
                 }
                 saveAppointment(bookingRequest);
-                return responsesave(true);
+                //envio correo
+                NotificationRequest notificationRequest = new NotificationRequest();
+                notificationRequest.setAddressee(bookingRequest.getEmail());
+                notificationRequest.setSubject("Reserva Agendifive");
+                notificationRequest.setMessage(bookingRequest.getMessage());
+                notificationInterface.sendNotification(notificationRequest);
+                return responsesave(true,bookingRequest.getEmail());
             }catch (Exception e){
                 e.printStackTrace();
-                return responsesave(false);
+                return responsesave(false,null);
             }
         }else{
-            return responsesave(false);
+            return responsesave(false,null);
         }
 
     }
@@ -54,14 +63,20 @@ public class BookingService implements BookingInterface {
                     appointment.setStatus("I");
                     appointmentRepository.save(appointment);
                 }
+                //envio correo
+                NotificationRequest notificationRequest = new NotificationRequest();
+                notificationRequest.setAddressee(bookingRequest.getEmail());
+                notificationRequest.setSubject("Reserva Agendifive");
+                notificationRequest.setMessage(bookingRequest.getMessage());
+                notificationInterface.sendNotification(notificationRequest);
                 saveAppointment(bookingRequest);
-                return responsesave(true);
+                return responsesave(true,bookingRequest.getEmail());
             }catch (Exception e){
-                return responsesave(false);
+                return responsesave(false,null);
             }
 
         }
-            return responsesave(false);
+            return responsesave(false,null);
 
     }
 
@@ -148,10 +163,12 @@ public class BookingService implements BookingInterface {
         return phone.matches(phoneRegex);
     }
 
-    private BookingResponse responsesave(Boolean save){
+    private BookingResponse responsesave(Boolean save, String email){
         BookingResponse bookingResponse = new BookingResponse();
         if(save){
-            bookingResponse.setBusinessMessage("La reserva fue creada correctamente");
+            bookingResponse.setBusinessMessage("Su reserva ha sido creada correctamente.\n" +
+                    "Le hemos enviado un correo electrónico a la dirección proporcionada:"+email+".\n" +
+                    "Si no logra verlo, por favor, revise la carpeta de Spam.");
             bookingResponse.setStatus("OK");
         }else{
             bookingResponse.setBusinessMessage("Existio un problema al crear la reserva");
